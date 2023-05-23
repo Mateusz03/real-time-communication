@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
-
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Lobby from "../lobby/Lobby";
 import Communicator from "../communicator/Communicator";
 
-interface MainContainerSettings {}
+interface MainContainerSettings {
+  uuID: string | undefined;
+}
 
 interface ContainerProps {
   location: string;
@@ -23,15 +24,23 @@ const Container = styled.div<ContainerProps>`
   flex-direction: column;
 `;
 
-const MainContainer: React.FC<MainContainerSettings> = () => {
+const MainContainer: React.FC<MainContainerSettings> = ({ uuID }) => {
   const location = useLocation();
-
+  console.log(uuID);
   return (
     <>
       <Container location={location.pathname}>
         <Routes>
-          <Route path="/" element={<Navigate to="/lobby" />} />
-          <Route path="/lobby" element={<Lobby />} />
+          {uuID !== undefined ? (
+            <>
+              <Route />
+              <Route path="/" element={<Navigate to={`/${uuID}`} />} />
+              <Route path={`/${uuID}`} element={<Lobby />} />
+            </>
+          ) : (
+            ""
+          )}
+
           <Route path="/communicator" element={<Communicator />} />
         </Routes>
       </Container>

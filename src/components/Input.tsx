@@ -12,19 +12,24 @@ const Container = styled.div`
 `;
 
 interface InputProps {
+  type: string;
   err: boolean;
 }
 
 const Inp = styled.input<InputProps>`
   padding: 16px 32px;
   box-sizing: border-box;
-  background-color: rgba(217, 217, 217, 0.2);
+  background-color: ${(p) =>
+    p.type === "Chat"
+      ? "rgba(217, 217, 217, 0.8)"
+      : "rgba(217, 217, 217, 0.2)"};
   color: rgba(33, 42, 62, 0.8);
   outline: none;
   border: none;
-  width: 240px;
+
+  width: ${(p) => (p.type === "Chat" ? "" : "240px")};
   height: 32px;
-  border-radius: 5px;
+  border-radius: ${(p) => (p.type === "Chat" ? "5px 0px 0px 5px" : "5px")};
   font-size: 1.15rem;
   font-family: "Righteous", cursive;
 
@@ -47,7 +52,14 @@ const Input: React.FC<InputSettings> = ({ type, err }) => {
   return (
     <>
       <Container>
-        <Inp placeholder="Nickname" err={err} maxLength={16} />
+        <Inp
+          placeholder={
+            type === "Nick" ? "Nickname" : type === "Chat" ? "Message" : ""
+          }
+          type={type}
+          err={err}
+          maxLength={type === "Chat" ? 100000000 : 16}
+        />
         {type === "Nick" ? (
           <ErrMessage>
             {type === "Nick" && err === true

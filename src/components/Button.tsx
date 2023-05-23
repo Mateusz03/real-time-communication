@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import SendImg from "../image/send.png";
 
 interface ButtonSettings {
   type: string;
@@ -22,6 +23,7 @@ const Container = styled.div<ContainerProps>`
   font-size: 1.15rem;
   font-weight: 500;
   user-select: none;
+  cursor: pointer;
 
   background-color: ${(p) =>
     p.click === true && p.type === "URL"
@@ -55,6 +57,23 @@ const Container = styled.div<ContainerProps>`
   }
 `;
 
+const ImgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #9ba4b5;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 8px 16px;
+  border-radius: 0px 5px 5px 0px;
+  cursor: pointer;
+`;
+
+const Img = styled.img`
+  width: 1.15rem;
+  height: 1.15rem;
+`;
+
 const Button: React.FC<ButtonSettings> = ({ type }) => {
   const [click, setClick] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -78,15 +97,21 @@ const Button: React.FC<ButtonSettings> = ({ type }) => {
 
   return (
     <>
-      <Container click={click} type={type} onClick={HandleClick}>
-        {type === "URL"
-          ? "Copy URL"
-          : type === "Ready"
-          ? "Ready"
-          : type === "Exit"
-          ? "Quit room"
-          : ""}
-      </Container>
+      {type === "Send" ? (
+        <ImgContainer>
+          <Img src={SendImg} />
+        </ImgContainer>
+      ) : (
+        <Container click={click} type={type} onClick={HandleClick}>
+          {type === "URL"
+            ? "Copy URL"
+            : type === "Ready"
+            ? "Ready"
+            : type === "Exit"
+            ? "Quit room"
+            : ""}
+        </Container>
+      )}
     </>
   );
 };
